@@ -21,7 +21,9 @@ def browser(driver: WebDriver) -> Generator[WebDriver, None, None]:
 def driver(language: str) -> webdriver.Chrome:
     options = webdriver.ChromeOptions()
     options.add_argument("start-maximized")
-    options.add_experimental_option("prefs", {"intl.accept_languages": language})
+    options.add_experimental_option(
+        "prefs", {"intl.accept_languages": language}
+    )
     driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(5)
 

@@ -1,13 +1,23 @@
+from typing import TYPE_CHECKING
+
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import (
-    visibility_of_element_located as is_visible,
-)
-from selenium.webdriver.support.ui import WebDriverWait as Wait
+
+if TYPE_CHECKING:
+    from pages.main_page import MainProto
+
+from pages.login_page import LoginPage
+from pages.main_page import MainPage
 
 
 def test_guest_can_go_to_login_page(browser: WebDriver) -> None:
     link = "http://selenium1py.pythonanywhere.com/"
-    browser.get(link)
-    login_link = browser.find_element(By.CSS_SELECTOR, "#login_link")
-    login_link.click()
+    page: MainProto = MainPage(browser, link)
+    page.open()
+    page.go_to_login_page()
+    input("prsss")
+    page.should_be_login_link()
+
+
+def test_form(browser: WebDriver) -> None:
+    page: LoginPage = LoginPage(browser, browser.current_url)
+    page.should_be_login_page()
