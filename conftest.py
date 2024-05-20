@@ -7,8 +7,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 
+@pytest.fixture(scope="class")
+def browser(browser_spare: WebDriver) -> Generator[WebDriver, None, None]:
+    yield browser_spare
+    browser_spare.delete_all_cookies()
+
+
 @pytest.fixture(scope="session")
-def browser(driver: WebDriver) -> Generator[WebDriver, None, None]:
+def browser_spare(driver: WebDriver) -> Generator[WebDriver, None, None]:
     logging.info("start browser for test..\n")
 
     yield driver
@@ -25,8 +31,6 @@ def driver(language: str) -> webdriver.Chrome:
         "prefs", {"intl.accept_languages": language}
     )
     driver = webdriver.Chrome(options=options)
-    driver.implicitly_wait(5)
-
     return driver
 
 
@@ -34,6 +38,16 @@ def driver(language: str) -> webdriver.Chrome:
 def language(request: pytest.FixtureRequest) -> str:
     opt = request.config.getoption("--language")
     return cast(str, opt)
+
+
+@pytest.fixture(scope="session")
+def link() -> str:
+    return "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+
+
+@pytest.fixture(scope="session")
+def base_link() -> str:
+    return "https://selenium1py.pythonanywhere.com/en-gb/"
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
