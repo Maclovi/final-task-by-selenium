@@ -31,13 +31,6 @@ Homepage = ""
 Documentation = ""
 Repository = ""
 
-[tool.pytest.ini_options]
-markers = [
-    "need_review",
-    "auth",
-    "login_guest",
-]
-
 [tool.ruff]
 line-length = 80
 
